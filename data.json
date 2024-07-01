@@ -1,0 +1,220 @@
+{
+    "AIF": {
+        "nodes": [
+            {
+                "nodeID": 3,
+                "text": "We should go eat",
+                "type": "L"
+            },
+            {
+                "nodeID": 4,
+                "text": "We should go eat",
+                "type": "I"
+            },
+            {
+                "nodeID": 5,
+                "text": "Default Illocuting",
+                "type": "YA"
+            },
+            {
+                "nodeID": 6,
+                "text": "|Wilma: Why",
+                "type": "L"
+            },
+            {
+                "nodeID": 7,
+                "text": "|Wilma: Why",
+                "type": "I"
+            },
+            {
+                "nodeID": 8,
+                "text": "Default Illocuting",
+                "type": "YA"
+            },
+            {
+                "nodeID": 9,
+                "text": "Bob: Because I'm hungry Wilma: Yeah me too",
+                "type": "L"
+            },
+            {
+                "nodeID": 10,
+                "text": "Bob: Because I'm hungry Wilma: Yeah me too",
+                "type": "I"
+            },
+            {
+                "nodeID": 11,
+                "text": "Default Illocuting",
+                "type": "YA"
+            },
+            {
+                "nodeID": 12,
+                "text": "Bob: So let's eat",
+                "type": "L"
+            },
+            {
+                "nodeID": 13,
+                "text": "Bob: So let's eat",
+                "type": "I"
+            },
+            {
+                "nodeID": 14,
+                "text": "Default Illocuting",
+                "type": "YA"
+            },
+            {
+                "text": "Default Inference",
+                "type": "RA",
+                "nodeID": 15
+            },
+            {
+                "text": "Default Inference",
+                "type": "RA",
+                "nodeID": 16
+            },
+            {
+                "text": "Default Conflict",
+                "type": "CA",
+                "nodeID": 17
+            },
+            {
+                "text": "Default Inference",
+                "type": "RA",
+                "nodeID": 18
+            }
+        ],
+        "edges": [
+            {
+                "edgeID": 2,
+                "fromID": 3,
+                "toID": 5
+            },
+            {
+                "edgeID": 3,
+                "fromID": 5,
+                "toID": 4
+            },
+            {
+                "edgeID": 4,
+                "fromID": 6,
+                "toID": 8
+            },
+            {
+                "edgeID": 5,
+                "fromID": 8,
+                "toID": 7
+            },
+            {
+                "edgeID": 6,
+                "fromID": 9,
+                "toID": 11
+            },
+            {
+                "edgeID": 7,
+                "fromID": 11,
+                "toID": 10
+            },
+            {
+                "edgeID": 8,
+                "fromID": 12,
+                "toID": 14
+            },
+            {
+                "edgeID": 9,
+                "fromID": 14,
+                "toID": 13
+            },
+            {
+                "fromID": 4,
+                "toID": 15,
+                "edgeID": 10
+            },
+            {
+                "fromID": 15,
+                "toID": 10,
+                "edgeID": 11
+            },
+            {
+                "fromID": 4,
+                "toID": 16,
+                "edgeID": 12
+            },
+            {
+                "fromID": 16,
+                "toID": 13,
+                "edgeID": 13
+            },
+            {
+                "fromID": 7,
+                "toID": 17,
+                "edgeID": 14
+            },
+            {
+                "fromID": 17,
+                "toID": 13,
+                "edgeID": 15
+            },
+            {
+                "fromID": 10,
+                "toID": 18,
+                "edgeID": 16
+            },
+            {
+                "fromID": 18,
+                "toID": 13,
+                "edgeID": 17
+            }
+        ],
+        "locutions": [
+            {
+                "nodeID": 3,
+                "personID": 0
+            },
+            {
+                "nodeID": 6,
+                "personID": 0
+            },
+            {
+                "nodeID": 9,
+                "personID": 0
+            },
+            {
+                "nodeID": 12,
+                "personID": 0
+            }
+        ],
+        "schemefulfillments": null,
+        "descriptorfulfillments": null,
+        "participants": [
+            {
+                "firstname": "Bob",
+                "participantID": 0,
+                "surname": "None"
+            },
+            {
+                "firstname": "Bob",
+                "participantID": 0,
+                "surname": "None"
+            },
+            {
+                "firstname": "Bob",
+                "participantID": 0,
+                "surname": "None"
+            },
+            {
+                "firstname": "Bob",
+                "participantID": 0,
+                "surname": "None"
+            },
+            {
+                "firstname": "Bob",
+                "participantID": 0,
+                "surname": "None"
+            }
+        ]
+    },
+    "OVA": [],
+    "dialog": true,
+    "text":
+        " Bob None <span class=\"highlighted\" id=\"0\">We should go eat. |Wilma: Why? Bob: Because I'm hungry Wilma: Yeah me too. Bob: So let's eat.</span>.<br><br>"
+
+}

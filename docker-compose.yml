@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+ amf-evaluation-metrics:
+  container_name: amf-evaluation-metrics
+  build: .
+  ports:
+  - "8000:5000"
