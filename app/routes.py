@@ -14,7 +14,7 @@ def is_valid_json(my_json):
 
 
 @application.route('/file', methods=['GET', 'POST'])
-def get_data():
+def get_data_file():
     if request.method == 'POST':
 
         f1 = request.files['file1']
@@ -263,13 +263,12 @@ def get_data():
             return render_template('docs.html')
 
 @application.route('/json', methods=['GET', 'POST'])
-def get_data():
+def get_data_json():
     if request.method == 'POST':
 
-        f1 = request.files['file1']
-        f2 = request.files['file2']
+        f1 = request.args.get['file1']
+        f2 = request.args.get['file2']
 
-        request.args.get('')
 
         true = True
         null = None
