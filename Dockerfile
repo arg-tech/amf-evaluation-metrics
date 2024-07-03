@@ -27,4 +27,4 @@ RUN chmod +x boot.sh
 ENV FLASK_APP app
 
 EXPOSE 5000
-ENTRYPOINT ["./boot.sh"]
+ENTRYPOINT ["gunicorn", "-b", "0.0.0.0:5000", "app.routes:app"]
