@@ -110,15 +110,20 @@ class evaluation:
 
     @staticmethod
     def CASS_calculation(text_sim_ss,k_graph):
-            if text_sim_ss == 'Error Text Input Is Empty' or text_sim_ss == 'Error: Source Text Was Different as Segmentations differ in length':
+            if text_sim_ss == 'Error Text Input Is Empty' or text_sim_ss == 'None:Error! Source Text Was Different as Segmentations differ in length':
                 overall_sim='None'
-                return overall_sim
             else:
+                overall_sim = 2((float(k_graph)*float(text_sim_ss))/(float(k_graph)+float(text_sim_ss)))
 
-             # overall_sim = (k_graph + text_sim_ss) / 2
-              overall_sim = (float(k_graph) + float(text_sim_ss)) / 2
+            return overall_sim
 
-              return overall_sim
+    @staticmethod
+    def CASSi_calculation(text_sim_ss,k_graph):
+            if text_sim_ss == 'Error Text Input Is Empty' or text_sim_ss == 'None:Error! Source Text Was Different as Segmentations differ in length':
+                overall_sim='None'
+            else:
+                overall_sim = (float(k_graph) + float(text_sim_ss)) / 2
+            return overall_sim
 
 
     # f1 0-1
