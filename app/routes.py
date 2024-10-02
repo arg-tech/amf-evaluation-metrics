@@ -48,15 +48,17 @@ def get_data_file():
                 data1, data2)
             kappa = eval.kappa_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
             Text_similarity = eval.text_similarity(data1, data2)
-            CASS = eval.CASS_calculation(Text_similarity, kappa)
-            F1 = eval.F1_Macro_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
+            cass = eval.CASS_calculation(Text_similarity, kappa)
+            cassi = eval.CASSi_calculation(Text_similarity, kappa)
+            f1_score = eval.F1_Macro_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
             Acc = eval.accuracy_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
             U_Alpha = eval.u_alpha_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
 
             results = {
-                "Macro F1": F1,
+                "Macro F1": f1_score,
                 "Accuracy": Acc,
-                "CASS": CASS,
+                "CASS": cass,
+                "CASSi": cassi,
                 "Text Similarity": Text_similarity,
                 "U-Alpha": U_Alpha,
                 "Kappa": kappa
@@ -93,15 +95,17 @@ def get_data_file():
                     data1, data2)
                 kappa = eval.kappa_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
                 Text_similarity = eval.text_similarity(data1, data2)
-                CASS = eval.CASS_calculation(Text_similarity, kappa)
-                F1 = eval.F1_Macro_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
+                cass = eval.CASS_calculation(Text_similarity, kappa)
+                cassi = eval.CASSi_calculation(Text_similarity, kappa)
+                f1_score = eval.F1_Macro_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
                 Acc = eval.accuracy_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
                 U_Alpha = eval.u_alpha_calculation(all_s_a_cm, prop_rels_comp_cm, loc_ya_rels_comp_cm, prop_ya_comp_cm, loc_ta_cm, prop_ya_cm)
 
                 results = {
-                    "Macro F1": F1,
+                    "Macro F1": f1_score,
                     "Accuracy": Acc,
-                    "CASS": CASS,
+                    "CASS": cass,
+                    "CASSi": cassi,
                     "Text Similarity": Text_similarity,
                     "U-Alpha": U_Alpha,
                     "Kappa": kappa
