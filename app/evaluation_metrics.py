@@ -113,7 +113,7 @@ class evaluation:
             if text_sim_ss == 'Error Text Input Is Empty' or text_sim_ss == 'None:Error! Source Text Was Different as Segmentations differ in length':
                 overall_sim='None'
             else:
-                overall_sim = 2((float(k_graph)*float(text_sim_ss))/(float(k_graph)+float(text_sim_ss)))
+                overall_sim = 2*((float(k_graph)*float(text_sim_ss))/(float(k_graph)+float(text_sim_ss)))
 
             return overall_sim
 

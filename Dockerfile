@@ -28,3 +28,4 @@ ENV FLASK_APP app
 
 EXPOSE 5000
 ENTRYPOINT ["gunicorn", "-b", "0.0.0.0:5000", "app.routes:app"]
+# ENTRYPOINT ["gunicorn", "-b", "0.0.0.0:5000", "app.routes:app", "--reload"]

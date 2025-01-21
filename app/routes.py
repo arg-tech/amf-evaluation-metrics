@@ -29,6 +29,7 @@ def get_data_file():
             f1 = request.files['file1']
             f2 = request.files['file2']
 
+
             eval = evaluation()
 
             f1.save(f1.filename)
@@ -123,5 +124,5 @@ def get_data_file():
         # logging.debug("Received GET request")
         return render_template('docs.html')
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
