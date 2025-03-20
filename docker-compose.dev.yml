@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+ amf-evaluation-metrics:
+  volumes:
+      - ./app:/home/AMF_Evaluation_Metrics/app
+  entrypoint: gunicorn -b :5000 app.routes:app --reload

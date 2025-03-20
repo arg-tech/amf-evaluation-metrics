@@ -4,7 +4,5 @@ services:
  amf-evaluation-metrics:
   container_name: amf-evaluation-metrics
   build: .
-#   volumes:
-    #   - ./app:/home/AMF_Evaluation_Metrics/app
   ports:
   - "8000:5000"

@@ -21,11 +21,8 @@ WORKDIR /home/AMF_Evaluation_Metrics
 RUN pip install gunicorn
 
 ADD app app
-ADD boot.sh ./
-RUN chmod +x boot.sh
 
 ENV FLASK_APP app
 
 EXPOSE 5000
 ENTRYPOINT ["gunicorn", "-b", "0.0.0.0:5000", "app.routes:app"]
-# ENTRYPOINT ["gunicorn", "-b", "0.0.0.0:5000", "app.routes:app", "--reload"]
