@@ -184,7 +184,6 @@ class match:
                 word_2[i:i + 2] = [word_2[i] + word_2[i + 1]]
                 seg_2_at_i = seg_2[i]  # Segment number at position i in seg_1
                 seg_2[i:i + 2] = [seg_2_at_i]
-                print("new2", word_2)
 
 
 
