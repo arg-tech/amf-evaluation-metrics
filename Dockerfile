@@ -24,5 +24,7 @@ ADD app app
 
 ENV FLASK_APP app
 
+ENV PYTHONUNBUFFERED=1
+
 EXPOSE 5000
 ENTRYPOINT ["gunicorn", "-b", "0.0.0.0:5000", "app.routes:app"]
