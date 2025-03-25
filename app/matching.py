@@ -8,6 +8,10 @@ from fuzzywuzzy import fuzz
 import segeval
 from bs4 import BeautifulSoup
 from .load_map import CorpusLoader
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class match:
 
@@ -593,15 +597,16 @@ class match:
 
         g_inodes = centra.get_i_node_list(g_copy)
         g1_inodes = centra.get_i_node_list(g1_copy)
-        print()
-        print(f"*** g_inodes:")
-        for i in g_inodes:
-            print('\t', i)
-        print()
-        print(f"*** g1_inodes:")
-        for i in g1_inodes:
-            print('\t', i)
-        print()
+
+        if logging.DEBUG:
+            logging.debug("\n\t*** g_inodes")
+            for i in g_inodes:
+                logging.debug(f"\t{i}")
+                
+            logging.debug("\n\t*** g1_inodes")
+            for i in g1_inodes:
+                logging.debug(f"\t{i}")
+
         relsi, valsi, switched = aifsim.text_sim_matrix(g_inodes, g1_inodes)
         #if switched the relations have been switched order so they need reversed when creating the dictionary
 
@@ -670,7 +675,7 @@ class match:
                 # print(f"\t\ttext1: ", text1)
                 # print()
 
-        print("matrix size ", matrix.shape, '\n')
+        logging.debug(f"matrix size {matrix.shape}")
 
 
         return matrix
@@ -684,7 +689,7 @@ class match:
         lev_vals = []
         lev_rels = []
         index_list = list(range(len(g_list)))
-        print('\nindex_list:', index_list)
+        logging.debug(f'index_list: {index_list}')
         m_copy = copy.deepcopy(matrix)
         rows_zeroed = []
         cols_zeroed = []
@@ -693,7 +698,7 @@ class match:
         # Check if any cols fail to be matched at all
         zero_cols = np.where(~m_copy.any(axis=0))[0]
         for col_fail in zero_cols:
-            print(f"Empty column {col_fail}: ", g1_list[col_fail])
+            logging.debug(f"Empty column {col_fail}: {g1_list[col_fail]}")
             lev_rels.append(((0,''),g1_list[col_fail]))
             lev_vals.append(0)
             cols_zeroed.append(col_fail)
@@ -710,38 +715,40 @@ class match:
 
         while counter <= smallest_value - 1 and m_copy.any():
             index_tup = unravel_index(m_copy.argmax(), m_copy.shape)
-            print("\ncounter = ", counter)
-            print("index_tup:", index_tup)
+            
+            logging.debug(f"counter = {counter}")
+            logging.debug(f"index_tup: {index_tup}")
             #matrix[index_tup[0]][index_tup[1]] = -9999999
-            print(f"matrix before zeroing out {index_tup}:")
-            print(m_copy)
+            logging.debug(f"matrix before zeroing out {index_tup}:")
+            logging.debug(m_copy)
             m_copy[index_tup[0]] = 0   # zeroes out row i
             m_copy[:,index_tup[1]] = 0 # zeroes out column i
-            print("matrix after zeroing:")
-            print(m_copy)
+            logging.debug("matrix after zeroing:")
+            logging.debug(f"{m_copy}")
             lev_rels.append((g_list[index_tup[0]],g1_list[index_tup[1]]))
-            print("latest addition: ", lev_rels[-1])
+            logging.debug(f"latest addition: {lev_rels[-1]}")
             lev_vals.append(matrix[index_tup[0]][index_tup[1]])
             
-            print("Current index_list:", index_list)
-            print("index_tup[0], to be removed:", index_tup[0])
+            logging.debug(f"Current index_list: {index_list}")
+            logging.debug(f"index_tup[0], to be removed: {index_tup[0]}")
             index_list.remove(index_tup[0])
-            print("Resulting index_list:", index_list)
+            logging.debug(f"Resulting index_list: {index_list}")
             counter = counter + 1
         for vals in index_list:
             lev_rels.append((g_list[vals],(0,'')))
             lev_vals.append(0)
         
-        print('\nOutput of select_max vals:')
-        print('\tlev_rels: ')
-        for r in lev_rels:
-            print('\t\t', r)
-        print('\tlev_vals: ', lev_vals)
+        logging.debug('\n\nOutput of select_max vals:')
+        logging.debug('lev_rels: ')
+        if logging.DEBUG:
+            for r in lev_rels:
+                logging.debug(f'{r}')
+        logging.debug(f'lev_vals: {lev_vals}')
 
-        print("matched:", matched_nodes)
+        logging.debug(f"matched: {matched_nodes}")
         rows_zeroed.sort()
         cols_zeroed.sort()
-        print(f"rows zeroed: {rows_zeroed}\ncols zeroed: {cols_zeroed}")
+        logging.debug(f"rows zeroed: {rows_zeroed}\tcols zeroed: {cols_zeroed}")
 
         return lev_rels, lev_vals
 

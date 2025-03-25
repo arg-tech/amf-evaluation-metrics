@@ -7,7 +7,8 @@ from app.evaluation_metrics import evaluation
 app = Flask(__name__)
 
 # Configure logging
-# logging.basicConfig(level=logging.DEBUG)
+
+logging.basicConfig(level=logging.INFO)
 
 def is_valid_json(my_json):
     try:
@@ -71,11 +72,9 @@ def get_data_file():
         if request.values:
 
             data1 = request.values.get('json1')
-
             data2 = request.values.get('json2')
 
             # print("Received data1:", data1)
-            #
             # print("Received data2:", data2)
 
             if is_valid_json(json.dumps(data1)) and is_valid_json(json.dumps(data2)):
@@ -87,7 +86,6 @@ def get_data_file():
                 data2 = json.loads(data2)
 
                 # print("Parsed data1:", data1)
-                #
                 # print("Parsed data2:", data2)
 
 
