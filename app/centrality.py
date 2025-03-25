@@ -58,6 +58,16 @@ class Centrality:
                 analyst_nodes.append(node)
         graph.remove_nodes_from(analyst_nodes)
         return graph
+    
+    @staticmethod
+    def remove_analyst_nodes(graph):
+        analysing_nodes = [x for x,y in graph.nodes(data=True) if y['type']=='YA' and y['text'] == 'Analysing']
+        analyst_nodes = [u for u in graph.nodes for v in analysing_nodes if graph.has_edge(u,v)]
+        
+        graph.remove_nodes_from(analysing_nodes)
+        graph.remove_nodes_from(analyst_nodes)
+        
+        return graph
 
     @staticmethod
     def get_eigen_centrality(graph):

@@ -8,6 +8,10 @@ from fuzzywuzzy import fuzz
 import segeval
 from bs4 import BeautifulSoup
 from .load_map import CorpusLoader
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class match:
 
@@ -16,10 +20,10 @@ class match:
         centra = Centrality()
 
         corpus_loader = CorpusLoader()
-        graph1=corpus_loader.parse_json(dt1)
+        graph1 = corpus_loader.parse_json(dt1)
         graph2 = corpus_loader.parse_json(dt2)
-        graph1 = centra.remove_iso_analyst_nodes(graph1)
-        graph2 = centra.remove_iso_analyst_nodes(graph2)
+        graph1 = centra.remove_analyst_nodes(graph1)
+        graph2 = centra.remove_analyst_nodes(graph2)
 
         return graph1,graph2
 
@@ -184,7 +188,6 @@ class match:
                 word_2[i:i + 2] = [word_2[i] + word_2[i + 1]]
                 seg_2_at_i = seg_2[i]  # Segment number at position i in seg_1
                 seg_2[i:i + 2] = [seg_2_at_i]
-                print("new2", word_2)
 
 
 
@@ -576,7 +579,6 @@ class match:
             text_2 = rel[1][1]
 
             if switched:
-
                 mat_dict = {'ID1': id_2, 'ID2': id_1, 'text1': text_2, 'text2': text_1}
             else:
                 mat_dict = {'ID1': id_1, 'ID2': id_2, 'text1': text_1, 'text2': text_2}
@@ -595,6 +597,16 @@ class match:
 
         g_inodes = centra.get_i_node_list(g_copy)
         g1_inodes = centra.get_i_node_list(g1_copy)
+
+        if logging.DEBUG:
+            logging.debug("\n\t*** g_inodes")
+            for i in g_inodes:
+                logging.debug(f"\t{i}")
+                
+            logging.debug("\n\t*** g1_inodes")
+            for i in g1_inodes:
+                logging.debug(f"\t{i}")
+
         relsi, valsi, switched = aifsim.text_sim_matrix(g_inodes, g1_inodes)
         #if switched the relations have been switched order so they need reversed when creating the dictionary
 
@@ -622,6 +634,9 @@ class match:
 
     @staticmethod
     def text_sim_matrix(g_list, g1_list):
+        # print('text_sim_matrix gets:')
+        # print('g_list = ', g_list)
+        # print('g1_list = ', g1_list)
         aifsim = match()
         g_size = len(g_list)
         g1_size = len(g1_list)
@@ -631,10 +646,12 @@ class match:
 
         if g_size >= g1_size:
             mat = aifsim.loop_nodes(g_list, g1_list)
+            # print(mat)
             rels, vals = aifsim.select_max_vals(mat, g1_size, g_list, g1_list)
         else:
             switch_flag = True
             mat = aifsim.loop_nodes(g1_list, g_list)
+            # print(mat)
             rels, vals = aifsim.select_max_vals(mat, g_size, g1_list, g_list)
 
         return rels, vals, switch_flag
@@ -653,6 +670,13 @@ class match:
                 #lev_val = normalized_levenshtein.distance(text, text1)
                 lev_val = (fuzz.ratio(text, text1))/100
                 matrix[i][i1] = lev_val
+                # print(f"distance {lev_val} (matrix[{i}][{i1}])")
+                # print(f"\t\ttext: ", text)
+                # print(f"\t\ttext1: ", text1)
+                # print()
+
+        logging.debug(f"matrix size {matrix.shape}")
+
 
         return matrix
 
@@ -665,24 +689,71 @@ class match:
         lev_vals = []
         lev_rels = []
         index_list = list(range(len(g_list)))
+        logging.debug(f'index_list: {index_list}')
         m_copy = copy.deepcopy(matrix)
-        while counter <= smallest_value - 1:
+        rows_zeroed = []
+        cols_zeroed = []
+        matched_nodes = []
+        
+        # Check if any cols fail to be matched at all
+        zero_cols = np.where(~m_copy.any(axis=0))[0]
+        for col_fail in zero_cols:
+            logging.debug(f"Empty column {col_fail}: {g1_list[col_fail]}")
+            lev_rels.append(((0,''),g1_list[col_fail]))
+            lev_vals.append(0)
+            cols_zeroed.append(col_fail)
+
+        # Pre-emptively check if any rows fail to be matched at all,
+        # in case there are more failed rows than 'spare' rows in cases of diff lengths.
+        zero_rows = np.where(~m_copy.any(axis=1))[0]
+        for row_fail in zero_rows:
+            index_list.remove(row_fail) # no need to come back to this
+            lev_rels.append((g_list[row_fail],(0,'')))
+            lev_vals.append(0)
+            print(f"Empty row {row_fail}: ", g_list[row_fail])
+            rows_zeroed.append(row_fail)
+
+        while counter <= smallest_value - 1 and m_copy.any():
             index_tup = unravel_index(m_copy.argmax(), m_copy.shape)
+            
+            logging.debug(f"counter = {counter}")
+            logging.debug(f"index_tup: {index_tup}")
             #matrix[index_tup[0]][index_tup[1]] = -9999999
+            logging.debug(f"matrix before zeroing out {index_tup}:")
+            logging.debug(m_copy)
             m_copy[index_tup[0]] = 0   # zeroes out row i
             m_copy[:,index_tup[1]] = 0 # zeroes out column i
+            logging.debug("matrix after zeroing:")
+            logging.debug(f"{m_copy}")
             lev_rels.append((g_list[index_tup[0]],g1_list[index_tup[1]]))
+            logging.debug(f"latest addition: {lev_rels[-1]}")
             lev_vals.append(matrix[index_tup[0]][index_tup[1]])
+            
+            logging.debug(f"Current index_list: {index_list}")
+            logging.debug(f"index_tup[0], to be removed: {index_tup[0]}")
             index_list.remove(index_tup[0])
+            logging.debug(f"Resulting index_list: {index_list}")
             counter = counter + 1
         for vals in index_list:
             lev_rels.append((g_list[vals],(0,'')))
             lev_vals.append(0)
+        
+        logging.debug('\n\nOutput of select_max vals:')
+        logging.debug('lev_rels: ')
+        if logging.DEBUG:
+            for r in lev_rels:
+                logging.debug(f'{r}')
+        logging.debug(f'lev_vals: {lev_vals}')
+
+        logging.debug(f"matched: {matched_nodes}")
+        rows_zeroed.sort()
+        cols_zeroed.sort()
+        logging.debug(f"rows zeroed: {rows_zeroed}\tcols zeroed: {cols_zeroed}")
+
         return lev_rels, lev_vals
 
     @staticmethod
     def convert_to_dict(conf_matrix):
-        values = []
         dicts = {}
         for i, col in enumerate(conf_matrix):
             dicts[i] = {}
@@ -1370,7 +1441,7 @@ class match:
 
                 conf_matrix[len(all_ya_text) - 1][index] =  conf_matrix[len(all_ya_text) - 1][index] + 1
             elif ID2 == 0:
-                yas2 = aifsim.get_ya_nodes_from_prop(ID1, graph1)
+                yas1 = aifsim.get_ya_nodes_from_prop(ID1, graph1)
                 index = all_ya_text.index(yas1)
 
                 conf_matrix[index][len(all_ya_text) - 1] =  conf_matrix[index][len(all_ya_text) - 1] + 1
