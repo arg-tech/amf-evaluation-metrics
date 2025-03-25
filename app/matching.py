@@ -20,10 +20,10 @@ class match:
         centra = Centrality()
 
         corpus_loader = CorpusLoader()
-        graph1=corpus_loader.parse_json(dt1)
+        graph1 = corpus_loader.parse_json(dt1)
         graph2 = corpus_loader.parse_json(dt2)
-        graph1 = centra.remove_iso_analyst_nodes(graph1)
-        graph2 = centra.remove_iso_analyst_nodes(graph2)
+        graph1 = centra.remove_analyst_nodes(graph1)
+        graph2 = centra.remove_analyst_nodes(graph2)
 
         return graph1,graph2
 
