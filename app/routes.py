@@ -1,7 +1,8 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify, render_template_string
 import json
 import os
 import logging
+import markdown2
 from app.evaluation_metrics import evaluation
 
 app = Flask(__name__)
@@ -61,7 +62,7 @@ def get_data_file():
                 "Macro F1": f1_score,
                 "Accuracy": Acc,
                 "CASS": cass,
-                "CASSi": cassi,
+                # "CASSi": cassi,
                 "Text Similarity": Text_similarity,
                 "U-Alpha": U_Alpha,
                 "Kappa": kappa
@@ -105,7 +106,7 @@ def get_data_file():
                     "Macro F1": f1_score,
                     "Accuracy": Acc,
                     "CASS": cass,
-                    "CASSi": cassi,
+                    # "CASSi": cassi,
                     "Text Similarity": Text_similarity,
                     "U-Alpha": U_Alpha,
                     "Kappa": kappa
@@ -120,8 +121,18 @@ def get_data_file():
             return jsonify({"error": "No files or JSON data provided"}), 400
 
     elif request.method == 'GET':
-        # logging.debug("Received GET request")
-        return render_template('docs.html')
+        # Read the markdown file
+        with open('/home/AMF_Evaluation_Metrics/README.md', 'r') as file:
+            md_content = file.read()
+            print(md_content)
+
+        # Convert to HTML
+        html_content = markdown2.markdown(md_content)#, extensions=['fenced_code'])
+
+        # Render the HTML content as a template
+        html_content = f"<html><head></head><body>{html_content}</body></html>"
+        return render_template_string(html_content)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
