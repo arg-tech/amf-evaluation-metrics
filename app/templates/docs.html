@@ -2,9 +2,12 @@
 <html>
 <body>
 
-<h1> Evaluation Metrics (F1 Macro/Accuracy/CASS/CASSi/Text Similarity/Kappa/U-Alpha) Computation</h1>
-<p> <b>Expected Input:</b> Two comprehensive xAIF files containing all information nodes and text segments</p>
-<h3> Functionality: first, this web service considers two xAIF graph match and then based on it, compares two xAIF files to compute evaluation metrics for statistical purposes or annotation agreements . </h3>
-<p> <b>Expected Output: F1 Macro/Accuracy/CASS/CASSi/Text Similarity/Kappa/U-Alpha</b> </p>
+<h1> Evaluation Metrics </h1>
+<p> <b>Functionality:</b> This web service compares two xAIF files and reports various metrics for assessing their similarity. It is primarily intended for assessing the results of argument mining systems relative to gold standard data, or for calculating inter-annotator agreement between manually annotated files. </p>
+<p> <b>Expected Input:</b> Two JSON xAIF files (with nodes and edges) containing identical text fields.</p>
+<p> <b>Expected Output:</b> CASS, Macro F1, Accuracy, Text Similarity, Kappa, U-Alpha </p>
+<br>
+<p> <b>Sample command:</b> curl -X POST -F "file1=@file1.json" -F "file2=@file2.json" http://amf-evaluation-metrics.amfws.arg.tech</p>
+<p> Both files must have identical text fields.</p>
 </body>
 </html>

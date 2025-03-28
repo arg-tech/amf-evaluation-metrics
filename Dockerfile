@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y git
 
 
 ADD requirements.txt .
+ADD README.md .
 RUN pip install -r requirements.txt
 RUN git clone https://github.com/Jacobe2169/GMatch4py
 WORKDIR /home/AMF_Evaluation_Metrics/GMatch4py

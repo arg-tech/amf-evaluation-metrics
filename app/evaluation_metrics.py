@@ -113,6 +113,8 @@ class evaluation:
             if text_sim_ss == 'Error Text Input Is Empty' or text_sim_ss == 'None:Error! Source Text Was Different as Segmentations differ in length':
                 overall_sim='None'
             else:
+                # Corrected CASS calculation, now matching CASS equation in Duthie et al. 2016: 2((M*S)/(M+S)). 
+                # Previously returned score based on another equation ((M+K)/2) (preserved below as CASSi for reference).
                 overall_sim = 2*((float(k_graph)*float(text_sim_ss))/(float(k_graph)+float(text_sim_ss)))
 
             return overall_sim
