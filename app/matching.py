@@ -1575,10 +1575,13 @@ class match:
             if n_type == 'YA':
                 n_text = graph.nodes[ya]['text']
                 return ya
+        print(f'No YA predecessor found for prop {node_id}: {graph.nodes[node_id]["text"]}')
         return ''
 
     @staticmethod
     def get_node_anchor(node_id, graph):
+        if node_id == '':
+            return ''
         nodes = list(graph.predecessors(node_id))
         for n in nodes:
             n_type = graph.nodes[n]['type']
