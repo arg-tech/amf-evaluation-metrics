@@ -1,7 +1,7 @@
 networkx==2.8.8
 cython==0.29.21
 requests==2.23.0
-numpy==1.16.5
+numpy==1.26.4
 fuzzywuzzy==0.18.0
 Flask==2.0.1
 Werkzeug==2.1.0
@@ -14,3 +14,5 @@ pycm==4.0
 python-Levenshtein==0.12.0
 lxml==4.6.3
 markdown2==2.4.13
+# A part of numpy that GMatch4py uses doesn't work after this version.
+setuptools~=73.0
