@@ -1,4 +1,4 @@
-FROM python:3.7.4
+FROM python:3.8
 
 
 RUN mkdir -p /home/AMF_Evaluation_Metrics
