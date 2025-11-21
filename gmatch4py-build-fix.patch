@@ -1,3 +1,9 @@
+# 3.12 removes distutils. Setuptools is now used instead as a (mostly) drop-in
+# replacement. Setuptools brings build isolation, which means that build
+# dependencies must now be specified in a pyproject.toml file.
+#
+# This patch also updates the code to support a newer version of numpy.
+
 diff --git c/GMatch4py/gmatch4py/embedding/graph2vec.pyx i/GMatch4py/gmatch4py/embedding/graph2vec.pyx
 index 4300d4f..6a833b8 100644
 --- c/GMatch4py/gmatch4py/embedding/graph2vec.pyx

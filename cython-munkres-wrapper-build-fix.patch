@@ -1,3 +1,9 @@
+# 3.12 removes distutils. Setuptools is now used instead as a (mostly) drop-in
+# replacement. Setuptools brings build isolation, which means that build
+# dependencies must now be specified in a pyproject.toml file.
+#
+# This patch also updates the code to support a newer version of numpy.
+
 diff --git c/cython-munkres-wrapper/pyproject.toml i/cython-munkres-wrapper/pyproject.toml
 new file mode 100644
 index 0000000..6bb9b35
