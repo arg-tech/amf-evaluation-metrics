@@ -1,0 +1,44 @@
+# 3.12 removes distutils. Setuptools is now used instead as a (mostly) drop-in
+# replacement. Setuptools brings build isolation, which means that build
+# dependencies must now be specified in a pyproject.toml file.
+#
+# This patch also updates the code to support a newer version of numpy.
+
+diff --git c/cython-munkres-wrapper/pyproject.toml i/cython-munkres-wrapper/pyproject.toml
+new file mode 100644
+index 0000000..6bb9b35
+--- /dev/null
++++ i/cython-munkres-wrapper/pyproject.toml
+@@ -0,0 +1,7 @@
++[build-system]
++requires = [
++    "setuptools~=80.9",
++    "numpy~=2.3",
++    "cython~=3.1",
++]
++build-backend = "setuptools.build_meta"
+diff --git c/src/munkres.pyx i/src/munkres.pyx
+index a166c5f..28ca24e 100644
+--- c/cython-munkres-wrapper/src/munkres.pyx
++++ i/cython-munkres-wrapper/src/munkres.pyx
+@@ -46,9 +46,9 @@ def iterative_munkres(np.ndarray[np.double_t,ndim=2] icost, max_cost):
+     cdef np.ndarray[np.double_t,ndim=2] cost = icost.copy()
+     cdef int x = cost.shape[0]
+     cdef int y = cost.shape[1]
+-    cdef np.ndarray[np.int_t,ndim=1] dim = np.arange(y)
++    cdef np.ndarray[np.intp_t,ndim=1] dim = np.arange(y)
+     cdef bool done = False
+-    cdef np.ndarray[np.int_t,ndim=2] assigned = np.zeros(shape=(x,y), dtype=np.int)
++    cdef np.ndarray[np.intp_t,ndim=2] assigned = np.zeros(shape=(x,y), dtype=np.int)
+     cdef list remove
+     while not done:
+         remove = []
+@@ -64,7 +64,7 @@ def iterative_munkres(np.ndarray[np.double_t,ndim=2] icost, max_cost):
+     return assigned.astype(np.bool)
+ 
+ @cython.boundscheck(False)
+-def _get_cost(np.ndarray[np.int_t, ndim=1] x, np.ndarray[np.int_t, ndim=1] y, np.ndarray[np.double_t, ndim=2] C):
++def _get_cost(np.ndarray[np.intp_t, ndim=1] x, np.ndarray[np.intp_t, ndim=1] y, np.ndarray[np.double_t, ndim=2] C):
+     cdef int n = x.shape[0]
+     # shut off bounds check
+     cdef int ii = 0

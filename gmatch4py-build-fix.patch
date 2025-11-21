@@ -1,0 +1,31 @@
+# 3.12 removes distutils. Setuptools is now used instead as a (mostly) drop-in
+# replacement. Setuptools brings build isolation, which means that build
+# dependencies must now be specified in a pyproject.toml file.
+#
+# This patch also updates the code to support a newer version of numpy.
+
+diff --git c/GMatch4py/gmatch4py/embedding/graph2vec.pyx i/GMatch4py/gmatch4py/embedding/graph2vec.pyx
+index 4300d4f..6a833b8 100644
+--- c/GMatch4py/gmatch4py/embedding/graph2vec.pyx
++++ i/GMatch4py/gmatch4py/embedding/graph2vec.pyx
+@@ -6,7 +6,6 @@ import pandas as pd
+ import networkx as nx
+ from tqdm import tqdm
+ cimport numpy as np
+-import numpy.distutils.system_info as sysinfo
+ 
+ from joblib import Parallel, delayed
+ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+diff --git c/GMatch4py/pyproject.toml i/GMatch4py/pyproject.toml
+new file mode 100644
+index 0000000..6bb9b35
+--- /dev/null
++++ i/GMatch4py/pyproject.toml
+@@ -0,0 +1,7 @@
++[build-system]
++requires = [
++    "setuptools~=80.9",
++    "numpy~=2.3",
++    "cython~=3.1",
++]
++build-backend = "setuptools.build_meta"
